@@ -86,6 +86,7 @@ class _HomePageState extends State<HomePage> {
                           expandedHeight: screenSize.height * 0.3,
                           floating: false,
                           pinned: false,
+                          
                           backgroundColor: Colors.white.withAlpha(0),
                           flexibleSpace: FlexibleSpaceBar(
                             centerTitle: true,
@@ -120,7 +121,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ];
                     },
-                    body: SingleChildScrollView(
+                    body:
+                        // Container(color: ,)
+
+                        SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
                           // Container(color: Colors.black,width: screenSize.width, height: 10,),
@@ -168,6 +172,16 @@ class _HomePageState extends State<HomePage> {
                                           ExpandingCard(),
                                           ExpandingCard(),
                                           ExpandingCard(),
+                                          ExpandingCard(),
+                                          ExpandingCard(),
+                                          ExpandingCard(),
+                                          ExpandingCard(),
+                                          ExpandingCard(),
+                                           ExpandingCard(),
+                                          ExpandingCard(),
+                                          ExpandingCard(),
+                                          // ExpandingCard(),
+                                          // ExpandingCard(),
                                         ],
                                       ),
                                     ),
@@ -293,28 +307,28 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Positioned(
-                  top: screenSize.height * 0.25,
-                  child: Container(
-                    // color: Colors.red,
-                    height: 30,
-                    width: screenSize.width,
-                    child: Center(
-                      child: ConfettiWidget(
-                        confettiController: _controllerTopCenter,
-                        blastDirection: 3 * pi / 2, // radial value - LEFT
-                        emissionFrequency: 0.01,
-                        numberOfParticles: 5,
-                        shouldLoop: false,
-                        colors: [
-                          Colors.green,
-                          Colors.blue,
-                          Colors.pink
-                        ], // manually specify the colors to be used
-                      ),
-                    ),
-                  ),
-                )
+                // Positioned(
+                //   top: screenSize.height * 0.25,
+                //   child: Container(
+                //     // color: Colors.red,
+                //     height: 30,
+                //     width: screenSize.width,
+                //     child: Center(
+                //       child: ConfettiWidget(
+                //         confettiController: _controllerTopCenter,
+                //         blastDirection: 3 * pi / 2, // radial value - LEFT
+                //         emissionFrequency: 0.01,
+                //         numberOfParticles: 5,
+                //         shouldLoop: false,
+                //         colors: [
+                //           Colors.green,
+                //           Colors.blue,
+                //           Colors.pink
+                //         ], // manually specify the colors to be used
+                //       ),
+                //     ),
+                //   ),
+                // )
               ],
             ),
           ),

@@ -12,6 +12,12 @@ class ExpandingCard extends StatefulWidget {
   _ExpandingCardState createState() => _ExpandingCardState();
 }
 
+
+// Expanding Card Data
+
+// Twitter User
+// tweets with their emotions
+// graph with sentiment over time 
 class _ExpandingCardState extends State<ExpandingCard> {
   // double shadowOffset = 2;
   bool expanded = false;
