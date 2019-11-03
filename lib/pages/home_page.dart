@@ -10,6 +10,7 @@ import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:mentallerts/widgets/reactive_button.dart';
 import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 
 var screenSize;
 
@@ -59,7 +60,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: blue_red_gradient.colors[0].withAlpha(150),
+      statusBarColor: red_yellow_gradient.colors[0].withAlpha(150),
       systemNavigationBarColor: const Color(0xFF1BA977),
       // #61C350
     ));
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   width: screenSize.width,
                   height: screenSize.height,
-                  decoration: BoxDecoration(gradient: blue_red_gradient),
+                  decoration: BoxDecoration(gradient: red_yellow_gradient),
                   child: NestedScrollView(
                     headerSliverBuilder:
                         (BuildContext context, bool innerBoxIsScrolled) {
@@ -86,7 +87,6 @@ class _HomePageState extends State<HomePage> {
                           expandedHeight: screenSize.height * 0.3,
                           floating: false,
                           pinned: false,
-                          
                           backgroundColor: Colors.white.withAlpha(0),
                           flexibleSpace: FlexibleSpaceBar(
                             centerTitle: true,
@@ -177,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                                           ExpandingCard(),
                                           ExpandingCard(),
                                           ExpandingCard(),
-                                           ExpandingCard(),
+                                          ExpandingCard(),
                                           ExpandingCard(),
                                           ExpandingCard(),
                                           // ExpandingCard(),
@@ -214,12 +214,12 @@ class _HomePageState extends State<HomePage> {
                                                     // width: 145,
                                                     // height: 44,
                                                     // decoration: BoxDec,
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+                                                    child: Stack(
+                                                      // mainAxisSize:
+                                                      //     MainAxisSize.max,
+                                                      // mainAxisAlignment:
+                                                      //     MainAxisAlignment
+                                                      //         .center,
                                                       children: <Widget>[
                                                         // Text("UAWEA"),
                                                         Container(
@@ -227,6 +227,8 @@ class _HomePageState extends State<HomePage> {
                                                           height: 38,
                                                           child: Center(
                                                             child: TextField(
+                                                              controller:
+                                                                  addUserController,
                                                               // maxLength: 34,
 
                                                               // maxLines: 1,
@@ -247,13 +249,13 @@ class _HomePageState extends State<HomePage> {
                                                               autofocus: true,
                                                               onEditingComplete:
                                                                   () {
-
-                                                                    appModel.press();
-                                                                // setState(() {
-                                                                //   this.addPressed =
-                                                                //       !this
-                                                                //           .addPressed;
-                                                                // });
+                                                                if (addUserController
+                                                                        .text !=
+                                                                    "") {
+                                                                  appModel.searchUser(
+                                                                      addUserController
+                                                                          .text);
+                                                                }
                                                               },
                                                               decoration:
                                                                   new InputDecoration(
@@ -276,13 +278,47 @@ class _HomePageState extends State<HomePage> {
                                                                           fontSize:
                                                                               14),
                                                                       hintText:
-                                                                          "Type twitter handle, e.g. @twice",
+                                                                          "@Twitter",
                                                                       fillColor:
                                                                           Colors
                                                                               .white70),
                                                             ),
                                                           ),
                                                         ),
+                                                        Positioned(
+                                                          right: 0,
+                                                          child:
+                                                              Transform.scale(
+                                                                  scale: 0.78,
+                                                                  child: Stack(
+                                                                    children: <
+                                                                        Widget>[
+                                                                      CircularProgressIndicator(
+                                                                        // valueColor: ,
+                                                                        strokeWidth:
+                                                                            10,
+                                                                      ),
+                                                                      Positioned(
+                                                                          right:
+                                                                              0,
+                                                                          left:
+                                                                              0,
+                                                                          bottom:
+                                                                              0,
+                                                                          top:
+                                                                              0,
+                                                                          child:
+                                                                              Icon(
+                                                                            FontAwesomeIcons.times,
+                                                                            color:
+                                                                                Colors.red,
+                                                                            size:
+                                                                                22,
+                                                                          ))
+                                                                    ],
+                                                                  )),
+                                                        )
+                                                        // appModel.searchUserDone?
                                                         // RaisedButton(
                                                         //   onPressed: () {
 
