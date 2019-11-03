@@ -6,21 +6,22 @@ import 'tweet_line.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:mentallerts/helpers/mentallert_icons.dart';
 import 'gradient_icon.dart';
+import 'package:speech_bubble/speech_bubble.dart';
 
 class ExpandingCard extends StatefulWidget {
   @override
   _ExpandingCardState createState() => _ExpandingCardState();
 }
 
-
 // Expanding Card Data
 
 // Twitter User
 // tweets with their emotions
-// graph with sentiment over time 
+// graph with sentiment over time
 class _ExpandingCardState extends State<ExpandingCard> {
   // double shadowOffset = 2;
   bool expanded = false;
+  bool sentimentInfoBalloonShown = false;
 
   // var data = [0.0, 1.0, 1.5, 2.0, 0.0, 0.0, -0.5, -1.0, -0.5, 0.0, 0.0];
 
@@ -176,60 +177,103 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                   )
                                 ],
                               ),
+                              // SizedBox(
+                              //   width: 10,
+                              // ),
+                              // Icon(
+                              //   FontAwesomeIcons.twitter,
+                              //   size: 24,
+                              //   color: Colors.blue,
+                              // )
                             ],
                           ),
                         ),
                         Expanded(
                           flex: 1,
-                          child: Container(
-                            // color: Colors.red,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Column(
-                                  mainAxisSize: MainAxisSize.max,
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                // color: Colors.red,
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
-                                    GradientIcon(
-                                      icon: MentallertIcons.asset_1,
-                                      size: 40,
-                                      gradient: blue_black_gradient,
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
                                     InkWell(
-                                      splashColor: Colors.red,
-                                      highlightColor: Colors.green,
                                       onTap: () {
-                                        print("Yawa");
+                                        setState(() {
+                                          this.sentimentInfoBalloonShown = true;
+                                        });
                                       },
-                                      child: Row(
+                                      splashColor: Colors.blue,
+                                      highlightColor: Colors.green,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: <Widget>[
-                                          Text(
-                                            "SAD",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontFamily: "Montserrat",
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.blue),
+                                          GradientIcon(
+                                            icon: MentallertIcons.asset_1,
+                                            size: 40,
+                                            gradient: blue_black_gradient,
                                           ),
                                           SizedBox(
-                                            width: 5,
+                                            height: 5,
                                           ),
-                                          Icon(
-                                            FontAwesomeIcons.infoCircle,
-                                            color: Colors.grey.shade400,
-                                            size: 13,
+                                          InkWell(
+                                            splashColor: Colors.red,
+                                            highlightColor: Colors.green,
+                                            onTap: () {
+                                              print("Yawa");
+                                            },
+                                            child: Row(
+                                              children: <Widget>[
+                                                Text(
+                                                  "SAD",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontFamily: "Montserrat",
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.blue),
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Icon(
+                                                  FontAwesomeIcons.infoCircle,
+                                                  color: Colors.grey.shade400,
+                                                  size: 13,
+                                                )
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              // Positioned(
+                              //   right: 15,
+                              //   child:(this.sentimentInfoBalloonShown)? SpeechBubble(
+                              //       nipLocation: NipLocation.BOTTOM_RIGHT,
+                              //       nipHeight: 20,
+                              //       color: Colors.grey.shade300,
+                              //       child: Container(
+                              //         margin: EdgeInsets.all(3),
+                              //         child: Row(
+                              //             mainAxisSize: MainAxisSize.min,
+                              //             children: <Widget>[
+                              //               Text("Feeling Sad")
+                              //               // Icon(
+                              //               //   FontAwesomeIcons.twitter,
+                              //               //   color: Colors.blue,
+                              //               //   size: 20,
+                              //               // )
+                              //             ]),
+                              //       )):SizedBox(width: 0.1,),
+                              // )
+                            ],
                           ),
                         )
                       ],
