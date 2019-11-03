@@ -1,4 +1,4 @@
-import 'SentimentState.dart';
+
 class Tweet {
   String content;
   String timestamp;
@@ -10,8 +10,14 @@ class Tweet {
         "refId": refId,
       };
 
-  Tweet.fromJson(Map<String, dynamic> json)
+  Tweet.fromNetworkJson(Map<String, dynamic> json) :
+      content = json["text"],
+      timestamp = json["time"],
+      refId = json["tweetId"];
+
+  Tweet.fromStorageJson(Map<String, dynamic> json)
       : content = json["content"],
         timestamp = json['timestamp'],
         refId = json['refId'];
 }
+ 

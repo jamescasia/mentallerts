@@ -9,7 +9,7 @@ class AccountInfo {
         "displayPhotoSource": displayPhotoSource,
       };
 
-  AccountInfo.fromJson(Map<String, dynamic> json)
+  AccountInfo.fromStorageJson(Map<String, dynamic> json)
       : displayName = json["displayName"],
         handle = json['handle'],
         displayPhotoSource = json['displayPhotoSource'];

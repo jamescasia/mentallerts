@@ -9,19 +9,39 @@ class MentallertUser {
 
   MentallertUser() {}
 
+  buildFromNetwork(String handle) async {
+
+    // twitterUser.
+
+
+
+  }
+
+  MentallertUser_fromNetwork(String handle) async{
+    // todo build user from everything
+    // MentallertUser mU = MentallertUser()
+    // ..twitterUser =await TwitterUser_fromNetwork(handle)
+    // ..
+    // return mU;
+
+    // TwitterUser tU = await TwitterUser()
+    // ..buildFromNetwork(handle);
+    
+  }
+
   Map<String, dynamic> toJson() => {
         'twitterUser': twitterUser,
         'sentiment': sentiment,
         "mentallertTweets": mentallertTweets.map((f) => f.toJson()).toList(),
       };
-  factory MentallertUser.fromJson(Map<String, dynamic> json) {
+  factory MentallertUser.fromStorageJson(Map<String, dynamic> json) {
     var mU = MentallertUser()
       ..twitterUser = json['twitterUser']
       ..sentiment = json['sentiment'];
     var list = json['mentallertTweets'] as List;
     if (list.length > 0) {
       List<MentallertTweet> rList =
-          list.map((i) => MentallertTweet.fromJson(i)).toList();
+          list.map((i) => MentallertTweet.fromStorageJson(i)).toList();
       mU.mentallertTweets = rList;
     } else
       mU.mentallertTweets = <MentallertTweet>[];

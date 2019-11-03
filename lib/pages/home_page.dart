@@ -247,11 +247,13 @@ class _HomePageState extends State<HomePage> {
                                                               autofocus: true,
                                                               onEditingComplete:
                                                                   () {
-                                                                setState(() {
-                                                                  this.addPressed =
-                                                                      !this
-                                                                          .addPressed;
-                                                                });
+
+                                                                    appModel.press();
+                                                                // setState(() {
+                                                                //   this.addPressed =
+                                                                //       !this
+                                                                //           .addPressed;
+                                                                // });
                                                               },
                                                               decoration:
                                                                   new InputDecoration(

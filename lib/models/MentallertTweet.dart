@@ -10,7 +10,7 @@ class MentallertTweet {
         "sentiment": sentiment,
       };
 
-  MentallertTweet.fromJson(Map<String, dynamic> json)
+  MentallertTweet.fromStorageJson(Map<String, dynamic> json)
       : tweet = json["tweet"],
         sentiment = json['sentiment'];
 }
