@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mentallerts/widgets/expanding_card.dart';
@@ -11,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:mentallerts/widgets/reactive_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 var screenSize;
 
@@ -20,6 +23,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  AppModel appModel;
   var red_yellow_gradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
@@ -38,16 +42,28 @@ class _HomePageState extends State<HomePage> {
         Colors.greenAccent.shade400,
       ]);
 
+  // StreamController addUserStreamController = new StreamController();
+
   bool addPressed = false;
   TextEditingController addUserController;
   ConfettiController _controllerTopCenter;
   @override
   void initState() {
+    appModel = AppModel();
     _controllerTopCenter = ConfettiController(duration: Duration(seconds: 5));
     // TODO: implement initState
     addUserController = TextEditingController();
 
     super.initState();
+
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        if (visible) {
+        } else {
+          appModel.addUserStreamController.add(AddingUserStates.Neutral);
+        }
+      },
+    );
   }
 
   @override
@@ -66,7 +82,7 @@ class _HomePageState extends State<HomePage> {
     ));
     screenSize = MediaQuery.of(context).size;
     return ScopedModel<AppModel>(
-      model: AppModel(),
+      model: appModel,
       child:
           ScopedModelDescendant<AppModel>(builder: (context, child, appModel) {
         return ScrollConfiguration(
@@ -167,16 +183,6 @@ class _HomePageState extends State<HomePage> {
                                           //     color: Colors.grey.shade300),
                                           ExpandingCard(),
 
-                                          ExpandingCard(),
-                                          ExpandingCard(),
-                                          ExpandingCard(),
-                                          ExpandingCard(),
-                                          ExpandingCard(),
-                                          ExpandingCard(),
-                                          ExpandingCard(),
-                                          ExpandingCard(),
-                                          ExpandingCard(),
-                                          ExpandingCard(),
                                           ExpandingCard(),
                                           ExpandingCard(),
                                           ExpandingCard(),
@@ -285,39 +291,37 @@ class _HomePageState extends State<HomePage> {
                                                             ),
                                                           ),
                                                         ),
-                                                        Positioned(
-                                                          right: 0,
-                                                          child:
-                                                              Transform.scale(
-                                                                  scale: 0.78,
-                                                                  child: Stack(
-                                                                    children: <
-                                                                        Widget>[
-                                                                      CircularProgressIndicator(
-                                                                        // valueColor: ,
-                                                                        strokeWidth:
-                                                                            10,
-                                                                      ),
-                                                                      Positioned(
-                                                                          right:
-                                                                              0,
-                                                                          left:
-                                                                              0,
-                                                                          bottom:
-                                                                              0,
-                                                                          top:
-                                                                              0,
-                                                                          child:
-                                                                              Icon(
-                                                                            FontAwesomeIcons.times,
-                                                                            color:
-                                                                                Colors.red,
-                                                                            size:
-                                                                                22,
-                                                                          ))
-                                                                    ],
-                                                                  )),
-                                                        )
+
+                                                        StreamBuilder(
+                                                            stream: appModel
+                                                                .addUserStreamController
+                                                                .stream,
+                                                            builder: (context,
+                                                                snapshot) {
+                                                              if (snapshot
+                                                                      .data ==
+                                                                  AddingUserStates
+                                                                      .Neutral)
+                                                                return AddingUserNeutralWidget();
+
+                                                              if (snapshot
+                                                                      .data ==
+                                                                  AddingUserStates
+                                                                      .LoadingSearch)
+                                                                return LoadingSearchWidget();
+
+                                                              if (snapshot
+                                                                      .data ==
+                                                                  AddingUserStates
+                                                                      .LoadingCheck)
+                                                                return LoadingCheckWidget();
+
+                                                              if (snapshot
+                                                                      .data ==
+                                                                  AddingUserStates
+                                                                      .Cross)
+                                                                return CrossWidget();
+                                                            })
                                                         // appModel.searchUserDone?
                                                         // RaisedButton(
                                                         //   onPressed: () {
@@ -396,6 +400,92 @@ class SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.red,
+    );
+  }
+}
+
+class AddingUserNeutralWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 0,
+    );
+  }
+}
+
+class LoadingSearchWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      right: 0,
+      child: Transform.scale(
+          scale: 0.78,
+          child: Stack(
+            children: <Widget>[
+              CircularProgressIndicator(
+                strokeWidth: 10,
+              )
+            ],
+          )),
+    );
+  }
+}
+
+class LoadingCheckWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      right: 0,
+      child: Transform.scale(
+          scale: 0.78,
+          child: Stack(
+            children: <Widget>[
+              CircularProgressIndicator(
+                strokeWidth: 10,
+              ),
+              Positioned(
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                  top: 0,
+                  child: Icon(
+                    FontAwesomeIcons.check,
+                    color: Colors.green,
+                    size: 22,
+                  ))
+            ],
+          )),
+    );
+  }
+}
+
+class CrossWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      right: 0,
+      child: Transform.scale(
+          scale: 0.78,
+          child: Stack(
+            children: <Widget>[
+              Opacity(
+                opacity: 0,
+                child: CircularProgressIndicator(
+                  strokeWidth: 10,
+                ),
+              ),
+              Positioned(
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                  top: 0,
+                  child: Icon(
+                    FontAwesomeIcons.times,
+                    color: Colors.red,
+                    size: 22,
+                  ))
+            ],
+          )),
     );
   }
 }

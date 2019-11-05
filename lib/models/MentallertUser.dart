@@ -17,6 +17,11 @@ class MentallertUser {
 
   }
 
+  addTweets(){
+
+    
+  }
+
   MentallertUser_fromNetwork(String handle) async{
     // todo build user from everything
     // MentallertUser mU = MentallertUser()
