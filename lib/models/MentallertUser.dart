@@ -9,6 +9,8 @@ class MentallertUser {
 
   MentallertUser() {}
 
+  
+
   buildFromNetwork(String handle) async {
 
     // twitterUser.

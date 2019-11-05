@@ -296,31 +296,40 @@ class _HomePageState extends State<HomePage> {
                                                             stream: appModel
                                                                 .addUserStreamController
                                                                 .stream,
+                                                                initialData: AddingUserStates.Neutral,
                                                             builder: (context,
                                                                 snapshot) {
-                                                              if (snapshot
-                                                                      .data ==
-                                                                  AddingUserStates
-                                                                      .Neutral)
-                                                                return AddingUserNeutralWidget();
+                                                              // if (snapshot
+                                                              //         .connectionState ==
+                                                              //     ConnectionState
+                                                              //         .done) {
+                                                                if (snapshot
+                                                                        .data ==
+                                                                    AddingUserStates
+                                                                        .Neutral)
+                                                                  return AddingUserNeutralWidget();
 
-                                                              if (snapshot
-                                                                      .data ==
-                                                                  AddingUserStates
-                                                                      .LoadingSearch)
-                                                                return LoadingSearchWidget();
+                                                                if (snapshot
+                                                                        .data ==
+                                                                    AddingUserStates
+                                                                        .LoadingSearch)
+                                                                  return LoadingSearchWidget();
 
-                                                              if (snapshot
-                                                                      .data ==
-                                                                  AddingUserStates
-                                                                      .LoadingCheck)
-                                                                return LoadingCheckWidget();
+                                                                if (snapshot
+                                                                        .data ==
+                                                                    AddingUserStates
+                                                                        .LoadingCheck)
+                                                                  return LoadingCheckWidget();
 
-                                                              if (snapshot
-                                                                      .data ==
-                                                                  AddingUserStates
-                                                                      .Cross)
-                                                                return CrossWidget();
+                                                                if (snapshot
+                                                                        .data ==
+                                                                    AddingUserStates
+                                                                        .Cross)
+                                                                  return CrossWidget();
+                                                              // } else
+                                                              //   return SizedBox(
+                                                              //     width: 1,
+                                                              //   );
                                                             })
                                                         // appModel.searchUserDone?
                                                         // RaisedButton(
