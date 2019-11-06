@@ -8,6 +8,7 @@ import 'package:mentallerts/helpers/mentallert_icons.dart';
 import 'gradient_icon.dart';
 import 'package:speech_bubble/speech_bubble.dart';
 import 'package:mentallerts/models/MentallertUser.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 // import 'menta';
 
 class ExpandingCard extends StatefulWidget {
@@ -51,7 +52,6 @@ class _ExpandingCardState extends State<ExpandingCard> {
   //     begin: Alignment.topCenter,
   //     end: Alignment.bottomCenter,
   //     colors: [Colors.blueGrey, Colors.blue]);
- 
 
   @override
   Widget build(BuildContext context) {
@@ -144,19 +144,30 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(1000)),
                                 child: Container(
-                                  width: 55,
-                                  height: 55,
-                                  // color: Colors.red,
-                                  child: Image.asset(
-                                    "assets/images/mina01.png",
-                                    fit: BoxFit.fitWidth,
-                                  ),
-                                  // Image(image: FileImage((File("assets/images/mina01.png"))),)
-                                  // decoration: BoxDecoration(
-                                  //   color: Colors.grey,
-                                  //   shape: BoxShape.circle,
-                                  // ),
-                                ),
+                                    width: 55,
+                                    height: 55,
+                                    // color: Colors.red,
+                                    child:
+
+                                        //  Image.asset(
+                                        //   "assets/images/mina01.png",
+                                        //   fit: BoxFit.fitWidth,
+                                        // ),
+
+                                        CachedNetworkImage(
+                                      imageUrl: mU.displayPhotoLink,
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    )
+
+                                    // Image(image: FileImage((File("assets/images/mina01.png"))),)
+                                    // decoration: BoxDecoration(
+                                    //   color: Colors.grey,
+                                    //   shape: BoxShape.circle,
+                                    // ),
+                                    ),
                               ),
                               SizedBox(
                                 width: screenSize.width * 0.04,
@@ -166,7 +177,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    "Myoui Mina",
+                                    "${mU.name}",
                                     style: TextStyle(
                                         color: Colors.grey.shade900,
                                         fontSize: 16,
@@ -174,7 +185,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                         fontWeight: FontWeight.w600),
                                   ),
                                   Text(
-                                    "@missmyoui",
+                                    "@${mU.handle}",
                                     style: TextStyle(
                                         color: Colors.grey.shade500,
                                         fontSize: 13,

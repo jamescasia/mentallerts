@@ -68,6 +68,7 @@ class AppModel extends Model {
     // print(mU.profileLink);
     // print(mU.displayPhotoLink);
     appendToMentallertUsers(mU);
+    notifyListeners();
 
     // mentallertUsers.add(mU);
 
