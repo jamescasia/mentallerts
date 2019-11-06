@@ -7,10 +7,15 @@ import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:mentallerts/helpers/mentallert_icons.dart';
 import 'gradient_icon.dart';
 import 'package:speech_bubble/speech_bubble.dart';
+import 'package:mentallerts/models/MentallertUser.dart';
+// import 'menta';
 
 class ExpandingCard extends StatefulWidget {
+  MentallertUser mU;
+
+  ExpandingCard(this.mU);
   @override
-  _ExpandingCardState createState() => _ExpandingCardState();
+  _ExpandingCardState createState() => _ExpandingCardState(mU);
 }
 
 // Expanding Card Data
@@ -20,6 +25,8 @@ class ExpandingCard extends StatefulWidget {
 // graph with sentiment over time
 class _ExpandingCardState extends State<ExpandingCard> {
   // double shadowOffset = 2;
+  MentallertUser mU;
+  _ExpandingCardState(this.mU);
   bool expanded = false;
   bool sentimentInfoBalloonShown = false;
 
@@ -44,8 +51,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
   //     begin: Alignment.topCenter,
   //     end: Alignment.bottomCenter,
   //     colors: [Colors.blueGrey, Colors.blue]);
-
-  _ExpandingCardState();
+ 
 
   @override
   Widget build(BuildContext context) {

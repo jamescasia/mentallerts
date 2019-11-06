@@ -62,11 +62,11 @@ class AppModel extends Model {
     MentallertUser mU = MentallertUser.fromNetwork(await userDetails(handle));
     mU.handle = handle;
     await mU.fetchInitialTweetsFromNetwork();
-    print(mU.mentallertTweets);
-    print(mU.handle);
-    print(mU.name);
-    print(mU.profileLink);
-    print(mU.displayPhotoLink);
+    // print(mU.mentallertTweets);
+    // print(mU.handle);
+    // print(mU.name);
+    // print(mU.profileLink);
+    // print(mU.displayPhotoLink);
     appendToMentallertUsers(mU);
 
     // mentallertUsers.add(mU);
@@ -79,6 +79,8 @@ class AppModel extends Model {
       mentallertUsers[mU.timeAdded] = mU;
       mentallertUserHandles.add(mU.handle);
     }
+    print(mentallertUserHandles);
+    print(mentallertUsers);
   }
 
   press() async {
