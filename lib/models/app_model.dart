@@ -2,12 +2,13 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'MentallertUser.dart';
-import 'Sentiment.dart';
+// import 'Sentiment.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class AppModel extends Model {
-  List<MentallertUser> mentallertUsers;
+  Map<int, MentallertUser> mentallertUsers = {};
+  List<String> mentallertUserHandles = [];
   Sentiment meanSentiment;
   Sentiment modeSentiment;
 
@@ -28,8 +29,8 @@ class AppModel extends Model {
       print("haha it exists");
       addUserStreamController.add(AddingUserStates.LoadingCheck);
 
-      // await Future.delayed(Duration(seconds: 2));
-      buildMentallertUserFromNetwork(handle);
+      // await Future.delayed(Duration(milliseconds: 600));
+      await buildMentallertUserFromNetwork(handle);
 
       addUserStreamController.add(AddingUserStates.Neutral);
 
@@ -58,7 +59,26 @@ class AppModel extends Model {
   buildMentallertUserFromNetwork(String handle) async {
     print(await userDetails(handle));
 
+    MentallertUser mU = MentallertUser.fromNetwork(await userDetails(handle));
+    mU.handle = handle;
+    await mU.fetchInitialTweetsFromNetwork();
+    print(mU.mentallertTweets);
+    print(mU.handle);
+    print(mU.name);
+    print(mU.profileLink);
+    print(mU.displayPhotoLink);
+    appendToMentallertUsers(mU);
+
+    // mentallertUsers.add(mU);
+
     // MentallertUser mU = MentallertUser.fromNetwork(handle);
+  }
+
+  appendToMentallertUsers(MentallertUser mU) {
+    if (!mentallertUsers.containsKey(mU.timeAdded) && !mentallertUserHandles.contains(mU.handle)) {
+      mentallertUsers[mU.timeAdded] = mU;
+      mentallertUserHandles.add(mU.handle);
+    }
   }
 
   press() async {
@@ -79,37 +99,4 @@ class AppModel extends Model {
 // https://tweets-api.azurewebsites.net/tweets-after?user=James46407787&timestamp=0
 
 enum AddingUserStates { Neutral, LoadingSearch, LoadingCheck, Cross }
-
-// class AddingUserState {
-
-// }
-
-// class AddingUserState {
-//   bool isLoading = false;
-//   bool userExists = false;
-//   bool addingUser = false;
-//   bool initState = true;
-//   AddingUserState() {
-
-//     isLoading = false;
-//     userExists = false;
-//     addingUser = false;
-//   }
-
-//   AddingUserState.isLoading() {
-//     isLoading = true;
-//     initState = false;
-//   }
-
-//   AddingUserState.userExists() {
-//     userExists = true;
-//     isLoading = false;
-//     initState = false;
-//   }
-
-//   AddingUserState.userNotExists() {
-//     userExists = isLoading = initState = false;
-//   }
-
-//   // AddingUserState.
-// }
+ 
