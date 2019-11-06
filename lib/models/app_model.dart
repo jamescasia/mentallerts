@@ -62,11 +62,10 @@ class AppModel extends Model {
     MentallertUser mU = MentallertUser.fromNetwork(await userDetails(handle));
     mU.handle = handle;
     await mU.fetchInitialTweetsFromNetwork();
-    // print(mU.mentallertTweets);
-    // print(mU.handle);
-    // print(mU.name);
-    // print(mU.profileLink);
-    // print(mU.displayPhotoLink);
+    print(mU.handle);
+    mU.mentallertTweets.forEach((m) {
+      print(m.content);
+    });
     appendToMentallertUsers(mU);
     notifyListeners();
 
@@ -76,7 +75,8 @@ class AppModel extends Model {
   }
 
   appendToMentallertUsers(MentallertUser mU) {
-    if (!mentallertUsers.containsKey(mU.timeAdded) && !mentallertUserHandles.contains(mU.handle)) {
+    if (!mentallertUsers.containsKey(mU.timeAdded) &&
+        !mentallertUserHandles.contains(mU.handle)) {
       mentallertUsers[mU.timeAdded] = mU;
       mentallertUserHandles.add(mU.handle);
     }
@@ -102,4 +102,3 @@ class AppModel extends Model {
 // https://tweets-api.azurewebsites.net/tweets-after?user=James46407787&timestamp=0
 
 enum AddingUserStates { Neutral, LoadingSearch, LoadingCheck, Cross }
- 

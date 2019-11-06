@@ -16,15 +16,30 @@ class MentallertUser {
   Sentiment sentiment;
   MentallertUser();
 
-  List<MentallertTweet> mentallertTweets;
+  List<MentallertTweet> mentallertTweets = [];
 
   fetchInitialTweetsFromNetwork() async {
-    mentallertTweets = [];
+    // print(await getSentimentTweets(handle));
 
-    print(await getTweets(handle));
+    var list = await getSentimentTweets(handle) as List;
+    if (list.length > 0) {
+      List<MentallertTweet> rList =
+          list.map((i) => MentallertTweet.fromNetwork(i)).toList();
+      mentallertTweets = rList;
+    } else
+      mentallertTweets = <MentallertTweet>[];
   }
 
-  fetchNewTweetsFromNetwork() {}
+  fetchNewTweetsFromNetwork() async {
+    print(await getSentimentTweets(handle));
+
+    var list = await getNewSentimentTweets(handle) as List;
+    if (list.length > 0) {
+      List<MentallertTweet> rList =
+          list.map((i) => MentallertTweet.fromNetwork(i)).toList();
+      mentallertTweets += rList;
+    }
+  }
 
   setSentiment() {
     sentiment = Sentiment.Happy;
@@ -39,7 +54,7 @@ class MentallertUser {
         "displayPhotoLink": displayPhotoLink,
         "overallSentiment": overallSentiment,
         "sentiment": sentiment,
-        "timeAdded":timeAdded,
+        "timeAdded": timeAdded,
         "mentallertTweets": mentallertTweets.map((f) => f.toJson()).toList(),
       };
   factory MentallertUser.fromStorageJson(Map<String, dynamic> json) {
@@ -76,14 +91,10 @@ class MentallertUser {
       ..handle = json["handle"]
       ..name = json["name"]
       ..profileLink = json["profile"]
-      ..displayPhotoLink = json["dplink"] 
-      ..timeAdded = DateTime.now().millisecondsSinceEpoch ;
- 
+      ..displayPhotoLink = json["dplink"]
+      ..timeAdded = DateTime.now().millisecondsSinceEpoch;
 
-
-
-
-      return mU;
+    return mU;
 
     // var list = json['mentallertTweets'] as List;
     // if (list.length > 0) {
@@ -108,8 +119,18 @@ class MentallertUser {
     return (json.decode((await http.get(
             'https://tweets-api.azurewebsites.net/get-tweets?user=${handle}'))
         .body));
-    // return http
-    //     .get('https://tweets-api.azurewebsites.net/get-tweets?user=${handle}').;
+  }
+
+  getNewSentimentTweets(handle) async {
+    return (json.decode((await http.get(
+            'https://tweets-api.azurewebsites.net/tweets-sentiment?user=${handle}&num=30&timestamp=${DateTime.now().millisecondsSinceEpoch.toString()}'))
+        .body));
+  }
+
+  getSentimentTweets(handle) async {
+    return (json.decode((await http.get(
+            'https://tweets-api.azurewebsites.net/tweets-sentiment?user=${handle}&num=30'))
+        .body));
   }
 }
 
@@ -134,9 +155,9 @@ class MentallertTweet {
         timeAdded = json['timeAdded'];
 
   MentallertTweet.fromNetwork(Map<String, dynamic> json)
-      : content = json["content"],
-        // sentimentValue = json["sentimentValue"], make available when kent has done it
-        // sentiment = json["sentiment"],
+      : content = json["text"],
+        sentimentValue = json["score"],
+        // sentiment = json["score"],
         timeAdded = json['time'];
 }
 // import 'package:mentallerts/models/MentallertTweet.dart';
