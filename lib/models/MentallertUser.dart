@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-enum Sentiment { Happy, Neutral, Sad }
+import 'Sentiment.dart';
+import 'package:stats/stats.dart';
 
 class MentallertUser {
   String handle;
@@ -23,8 +24,9 @@ class MentallertUser {
 
     var list = await getSentimentTweets(handle) as List;
     if (list.length > 0) {
-      List<MentallertTweet> rList =
-          list.map((i) => MentallertTweet.fromNetwork(i)).toList();
+      List<MentallertTweet> rList = list
+          .map((i) => MentallertTweet.fromNetwork(i)..setTweetSentiment())
+          .toList();
       mentallertTweets = rList;
     } else
       mentallertTweets = <MentallertTweet>[];
@@ -35,15 +37,29 @@ class MentallertUser {
 
     var list = await getNewSentimentTweets(handle) as List;
     if (list.length > 0) {
-      List<MentallertTweet> rList =
-          list.map((i) => MentallertTweet.fromNetwork(i)).toList();
-      mentallertTweets += rList;
+      List<MentallertTweet> rList = list
+          .map((i) => MentallertTweet.fromNetwork(i)..setTweetSentiment())
+          .toList();
+      mentallertTweets = rList + mentallertTweets;
     }
   }
 
   setSentiment() {
-    sentiment = Sentiment.Happy;
-    overallSentiment = 22.0;
+    Map<Sentiment, int> counts = {
+
+      Sentiment.Happy: 0,
+      Sentiment.Neutral:0,
+      Sentiment.Sad: 0
+    };
+
+    for(MentallertTweet t in mentallertTweets){
+
+      counts[t.sentiment]+=1; 
+
+    }
+    sentiment =(counts[Sentiment.Happy] >=counts[Sentiment.Neutral] &&counts[Sentiment.Happy] >=counts[Sentiment.Sad]   )? Sentiment.Happy:(counts[Sentiment.Neutral] >=counts[Sentiment.Happy] &&counts[Sentiment.Neutral] >=counts[Sentiment.Sad]   )?Sentiment.Neutral: Sentiment.Sad;
+ 
+    
   }
 
   Map<String, dynamic> toJson() => {
@@ -129,7 +145,7 @@ class MentallertUser {
 
   getSentimentTweets(handle) async {
     return (json.decode((await http.get(
-            'https://tweets-api.azurewebsites.net/tweets-sentiment?user=${handle}&num=30'))
+            'https://tweets-api.azurewebsites.net/tweets-sentiment?user=${handle}'))
         .body));
   }
 }
@@ -140,6 +156,14 @@ class MentallertTweet {
 
   double sentimentValue;
   Sentiment sentiment;
+
+  setTweetSentiment() {
+    {
+      sentiment = (sentimentValue > 0.85)
+          ? Sentiment.Happy
+          : (sentimentValue < 0.25) ? Sentiment.Sad : Sentiment.Neutral;
+    }
+  }
 
   Map<String, dynamic> toJson() => {
         "content": content,

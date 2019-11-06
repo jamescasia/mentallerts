@@ -8,6 +8,7 @@ import 'package:mentallerts/helpers/mentallert_icons.dart';
 import 'gradient_icon.dart';
 import 'package:speech_bubble/speech_bubble.dart';
 import 'package:mentallerts/models/MentallertUser.dart';
+import 'package:mentallerts/models/Sentiment.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 // import 'menta';
 
@@ -64,6 +65,13 @@ class _ExpandingCardState extends State<ExpandingCard> {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [const Color(0xffFC2A2A), const Color(0xffD7DF16)]);
+    var green_green_gradient = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Colors.greenAccent.shade400,
+          Colors.greenAccent.shade400,
+        ]);
 
     var blue_red_gradient = LinearGradient(
         begin: Alignment.topCenter,
@@ -170,7 +178,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                     ),
                               ),
                               SizedBox(
-                                width: screenSize.width * 0.04,
+                                width: screenSize.width * 0.02,
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -178,6 +186,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                 children: <Widget>[
                                   Text(
                                     "${mU.name}",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color: Colors.grey.shade900,
                                         fontSize: 16,
@@ -186,6 +195,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                   ),
                                   Text(
                                     "@${mU.handle}",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         color: Colors.grey.shade500,
                                         fontSize: 13,
@@ -228,11 +238,28 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: <Widget>[
-                                          GradientIcon(
-                                            icon: MentallertIcons.asset_1,
-                                            size: 40,
-                                            gradient: blue_black_gradient,
-                                          ),
+                                          (mU.sentiment == Sentiment.Sad)
+                                              ? GradientIcon(
+                                                  icon: MentallertIcons.asset_1,
+                                                  size: 25,
+                                                  gradient: blue_red_gradient,
+                                                )
+                                              : (mU.sentiment ==
+                                                      Sentiment.Neutral)
+                                                  ? GradientIcon(
+                                                      icon: MentallertIcons
+                                                          .asset_3,
+                                                      size: 25,
+                                                      gradient:
+                                                          green_green_gradient,
+                                                    )
+                                                  : GradientIcon(
+                                                      icon: MentallertIcons
+                                                          .asset_2,
+                                                      size: 25,
+                                                      gradient:
+                                                          red_yellow_gradient,
+                                                    ),
                                           SizedBox(
                                             height: 5,
                                           ),
@@ -245,7 +272,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                             child: Row(
                                               children: <Widget>[
                                                 Text(
-                                                  "SAD",
+                                                  "${(mU.sentiment == Sentiment.Happy)?"HAPPY":(mU.sentiment == Sentiment.Neutral)?"NEUTRAL":"SAD"}",
                                                   style: TextStyle(
                                                       fontSize: 12,
                                                       fontFamily: "Montserrat",
@@ -324,7 +351,9 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                     child: Sparkline(
                                       lineWidth: 5,
                                       lineGradient: happy_sad_gradient,
-                                      data: data,
+                                      data: mU.mentallertTweets
+                                          .map((f) => f.sentimentValue)
+                                          .toList(),
                                     ))),
                             Expanded(
                               flex: 1,
@@ -365,11 +394,10 @@ class _ExpandingCardState extends State<ExpandingCard> {
                         //       fontWeight: FontWeight.w500),
                         // ),
                         Column(
-                          children: <Widget>[
-                            TweetLine(),
-                            TweetLine(),
-                            TweetLine()
-                          ],
+                          children: mU.mentallertTweets
+                              .getRange(0, 3)
+                              .map((f) => TweetLine(f))
+                              .toList(),
                         )
                       ],
                     ),

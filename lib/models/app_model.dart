@@ -1,7 +1,9 @@
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+import 'Sentiment.dart';
 import 'MentallertUser.dart';
+import 'package:flutter/material.dart';
 // import 'Sentiment.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -11,10 +13,13 @@ class AppModel extends Model {
   List<String> mentallertUserHandles = [];
   Sentiment meanSentiment;
   Sentiment modeSentiment;
+  BuildContext context;
+
+  TextEditingController addUserController = TextEditingController();
 
   StreamController addUserStreamController = StreamController();
 
-  AppModel() {
+  AppModel(this.context) {
     addUserStreamController.add(AddingUserStates.Neutral);
   }
 
@@ -33,12 +38,17 @@ class AppModel extends Model {
       await buildMentallertUserFromNetwork(handle);
 
       addUserStreamController.add(AddingUserStates.Neutral);
+      FocusScope.of(context).requestFocus(FocusNode());
 
       // if(AddingUserState)
     } else {
       print("haha it doesnt");
       addUserStreamController.add(AddingUserStates.Cross);
     }
+
+    addUserController.text = "";
+
+    notifyListeners();
   }
 
   userExists(String handle) async {
@@ -66,8 +76,8 @@ class AppModel extends Model {
     mU.mentallertTweets.forEach((m) {
       print(m.content);
     });
+    mU.setSentiment();
     appendToMentallertUsers(mU);
-    notifyListeners();
 
     // mentallertUsers.add(mU);
 

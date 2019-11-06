@@ -45,14 +45,12 @@ class _HomePageState extends State<HomePage> {
   // StreamController addUserStreamController = new StreamController();
 
   bool addPressed = false;
-  TextEditingController addUserController;
   ConfettiController _controllerTopCenter;
   @override
   void initState() {
-    appModel = AppModel();
+    appModel = AppModel(context);
     _controllerTopCenter = ConfettiController(duration: Duration(seconds: 5));
-    // TODO: implement initState
-    addUserController = TextEditingController();
+    // TODO: implement initState 
 
     super.initState();
 
@@ -237,7 +235,7 @@ class _HomePageState extends State<HomePage> {
                                                           child: Center(
                                                             child: TextField(
                                                               controller:
-                                                                  addUserController,
+                                                                  appModel.addUserController,
                                                               // maxLength: 34,
 
                                                               // maxLines: 1,
@@ -258,13 +256,14 @@ class _HomePageState extends State<HomePage> {
                                                               autofocus: true,
                                                               onEditingComplete:
                                                                   () {
-                                                                if (addUserController
+                                                                if (appModel.addUserController
                                                                         .text !=
                                                                     "") {
                                                                   appModel.searchUser(
-                                                                      addUserController
+                                                                      appModel.addUserController
                                                                           .text);
                                                                 }
+                                                                // FocusScope.of(context).requestFocus(FocusNode());
                                                               },
                                                               decoration:
                                                                   new InputDecoration(

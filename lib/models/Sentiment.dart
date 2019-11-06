@@ -1,7 +1,2 @@
-import 'SentimentState.dart';
 
-class Sentiment {
-
-  SentimentState state;
-  double value;
-}
+enum Sentiment { Happy, Neutral, Sad }

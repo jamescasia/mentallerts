@@ -33,6 +33,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   speech_bubble: 
   fluttertoast: 
+  stats:
   
 
 dev_dependencies:
