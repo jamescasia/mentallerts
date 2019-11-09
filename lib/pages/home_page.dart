@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [const Color(0xffFC2A2A), const Color(0xffD7DF16)]);
-
+  
   var blue_red_gradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     appModel = AppModel(context);
     _controllerTopCenter = ConfettiController(duration: Duration(seconds: 5));
-    // TODO: implement initState 
+    // TODO: implement initState
 
     super.initState();
 
@@ -175,22 +175,25 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     ClipRect(
                                       child: Column(
-                                        children: 
-                                        appModel.mentallertUsers.values.map((  user)=> ExpandingCard(user) ).toList()
-                                        
-                                        // <Widget>[
-                                        //   // Divider(
-                                        //   //     thickness: 1.0,
-                                        //   //     color: Colors.grey.shade300),
-                                        //   ExpandingCard(),
+                                          children: appModel
+                                              .mentallertUsers.values
+                                              .map(
+                                                  (user) => ExpandingCard(user))
+                                              .toList()
 
-                                        //   ExpandingCard(),
-                                        //   ExpandingCard(),
-                                        //   ExpandingCard(),
-                                        //   // ExpandingCard(),
-                                        //   // ExpandingCard(),
-                                        // ],
-                                      ),
+                                          // <Widget>[
+                                          //   // Divider(
+                                          //   //     thickness: 1.0,
+                                          //   //     color: Colors.grey.shade300),
+                                          //   ExpandingCard(),
+
+                                          //   ExpandingCard(),
+                                          //   ExpandingCard(),
+                                          //   ExpandingCard(),
+                                          //   // ExpandingCard(),
+                                          //   // ExpandingCard(),
+                                          // ],
+                                          ),
                                     ),
                                     Container(
                                         height: 60,
@@ -234,8 +237,8 @@ class _HomePageState extends State<HomePage> {
                                                           height: 38,
                                                           child: Center(
                                                             child: TextField(
-                                                              controller:
-                                                                  appModel.addUserController,
+                                                              controller: appModel
+                                                                  .addUserController,
                                                               // maxLength: 34,
 
                                                               // maxLines: 1,
@@ -256,11 +259,13 @@ class _HomePageState extends State<HomePage> {
                                                               autofocus: true,
                                                               onEditingComplete:
                                                                   () {
-                                                                if (appModel.addUserController
+                                                                if (appModel
+                                                                        .addUserController
                                                                         .text !=
                                                                     "") {
                                                                   appModel.searchUser(
-                                                                      appModel.addUserController
+                                                                      appModel
+                                                                          .addUserController
                                                                           .text);
                                                                 }
                                                                 // FocusScope.of(context).requestFocus(FocusNode());
@@ -298,36 +303,38 @@ class _HomePageState extends State<HomePage> {
                                                             stream: appModel
                                                                 .addUserStreamController
                                                                 .stream,
-                                                                initialData: AddingUserStates.Neutral,
+                                                            initialData:
+                                                                AddingUserStates
+                                                                    .Neutral,
                                                             builder: (context,
                                                                 snapshot) {
                                                               // if (snapshot
                                                               //         .connectionState ==
                                                               //     ConnectionState
                                                               //         .done) {
-                                                                if (snapshot
-                                                                        .data ==
-                                                                    AddingUserStates
-                                                                        .Neutral)
-                                                                  return AddingUserNeutralWidget();
+                                                              if (snapshot
+                                                                      .data ==
+                                                                  AddingUserStates
+                                                                      .Neutral)
+                                                                return AddingUserNeutralWidget();
 
-                                                                if (snapshot
-                                                                        .data ==
-                                                                    AddingUserStates
-                                                                        .LoadingSearch)
-                                                                  return LoadingSearchWidget();
+                                                              if (snapshot
+                                                                      .data ==
+                                                                  AddingUserStates
+                                                                      .LoadingSearch)
+                                                                return LoadingSearchWidget();
 
-                                                                if (snapshot
-                                                                        .data ==
-                                                                    AddingUserStates
-                                                                        .LoadingCheck)
-                                                                  return LoadingCheckWidget();
+                                                              if (snapshot
+                                                                      .data ==
+                                                                  AddingUserStates
+                                                                      .LoadingCheck)
+                                                                return LoadingCheckWidget();
 
-                                                                if (snapshot
-                                                                        .data ==
-                                                                    AddingUserStates
-                                                                        .Cross)
-                                                                  return CrossWidget();
+                                                              if (snapshot
+                                                                      .data ==
+                                                                  AddingUserStates
+                                                                      .Cross)
+                                                                return CrossWidget();
                                                               // } else
                                                               //   return SizedBox(
                                                               //     width: 1,

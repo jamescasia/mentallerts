@@ -22,6 +22,11 @@ class AppModel extends Model {
   AppModel(this.context) {
     addUserStreamController.add(AddingUserStates.Neutral);
   }
+  dismissCard(key){
+
+    mentallertUsers.remove(key);
+    notifyListeners();
+  }
 
   searchUser(String handle) async {
     print("timestaamp is " + DateTime.now().millisecondsSinceEpoch.toString());
