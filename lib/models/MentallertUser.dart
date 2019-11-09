@@ -13,7 +13,7 @@ class MentallertUser {
   String displayPhotoPath;
   var timeAdded;
 
-  double overallSentiment;
+  double overallSentiment = 0;
   Sentiment sentiment;
   MentallertUser();
 
@@ -133,19 +133,19 @@ class MentallertUser {
 
   getTweets(handle) async {
     return (json.decode((await http.get(
-            'https://tweets-api.azurewebsites.net/get-tweets?user=${handle}'))
+            'https://mentalert.azurewebsites.net/get-tweets?user=${handle}'))
         .body));
   }
 
   getNewSentimentTweets(handle) async {
     return (json.decode((await http.get(
-            'https://tweets-api.azurewebsites.net/tweets-sentiment?user=${handle}&num=30&timestamp=${DateTime.now().millisecondsSinceEpoch.toString()}'))
+            'https://mentalert.azurewebsites.net/tweets-sentiment?user=${handle}&num=30&timestamp=${DateTime.now().millisecondsSinceEpoch.toString()}'))
         .body));
   }
 
   getSentimentTweets(handle) async {
     return (json.decode((await http.get(
-            'https://tweets-api.azurewebsites.net/tweets-sentiment?user=${handle}'))
+            'https://mentalert.azurewebsites.net/tweets-sentiment?user=${handle}&num=15'))
         .body));
   }
 }
@@ -154,7 +154,7 @@ class MentallertTweet {
   String content;
   String timeAdded;
 
-  double sentimentValue;
+  double sentimentValue = 0;
   Sentiment sentiment;
 
   setTweetSentiment() {

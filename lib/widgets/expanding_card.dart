@@ -114,7 +114,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
         onResize: () {},
         direction: DismissDirection.endToStart,
         onDismissed: (direction) {
-          appModel.dismissCard(mU.timeAdded);
+          appModel.dismissCard(mU.timeAdded, mU.handle);
 
           setState(() {});
         },

@@ -9,10 +9,13 @@ import 'package:mentallerts/models/app_model.dart';
 import 'package:mentallerts/widgets/add_button.dart';
 import 'package:confetti/confetti.dart';
 import 'dart:math';
+
+import 'package:mentallerts/helpers/mentallert_icons.dart';
 import 'package:flutter/services.dart';
 import 'package:mentallerts/widgets/reactive_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mentallerts/models/Sentiment.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 var screenSize;
@@ -28,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [const Color(0xffFC2A2A), const Color(0xffD7DF16)]);
-  
+
   var blue_red_gradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
@@ -40,6 +43,14 @@ class _HomePageState extends State<HomePage> {
       colors: [
         Colors.greenAccent.shade400,
         Colors.greenAccent.shade400,
+      ]);
+
+  var neutral_gradient = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Colors.teal,
+        Colors.tealAccent.shade400,
       ]);
 
   // StreamController addUserStreamController = new StreamController();
@@ -73,16 +84,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: red_yellow_gradient.colors[0].withAlpha(150),
-      systemNavigationBarColor: const Color(0xFF1BA977),
-      // #61C350
-    ));
     screenSize = MediaQuery.of(context).size;
     return ScopedModel<AppModel>(
       model: appModel,
       child:
           ScopedModelDescendant<AppModel>(builder: (context, child, appModel) {
+        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+          statusBarColor: ((appModel.finalSentiment == Sentiment.Happy)
+                  ? red_yellow_gradient.colors[0]
+                  : (appModel.finalSentiment == Sentiment.Sad)
+                      ? blue_red_gradient.colors[0]
+                      : neutral_gradient.colors[0])
+              .withAlpha(150),
+          systemNavigationBarColor: const Color(0xFF1BA977),
+          // #61C350
+        ));
         return ScrollConfiguration(
           behavior: CustomScrollBehaviour(),
           child: Scaffold(
@@ -92,7 +108,12 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   width: screenSize.width,
                   height: screenSize.height,
-                  decoration: BoxDecoration(gradient: red_yellow_gradient),
+                  decoration: BoxDecoration(
+                      gradient: (appModel.finalSentiment == Sentiment.Happy)
+                          ? red_yellow_gradient
+                          : (appModel.finalSentiment == Sentiment.Sad)
+                              ? blue_red_gradient
+                              : neutral_gradient),
                   child: NestedScrollView(
                     headerSliverBuilder:
                         (BuildContext context, bool innerBoxIsScrolled) {
@@ -124,7 +145,12 @@ class _HomePageState extends State<HomePage> {
                                     height: screenSize.height * 0.01,
                                   ),
                                   Icon(
-                                    FontAwesomeIcons.smile,
+                                    (appModel.finalSentiment == Sentiment.Happy)
+                                        ? FontAwesomeIcons.smileBeam
+                                        : (appModel.finalSentiment ==
+                                                Sentiment.Sad)
+                                            ? FontAwesomeIcons.frown
+                                            : FontAwesomeIcons.meh,
                                     color: Colors.white,
                                     size: 60,
                                   ),

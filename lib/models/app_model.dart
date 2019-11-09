@@ -11,8 +11,9 @@ import 'package:flutter/material.dart';
 class AppModel extends Model {
   Map<int, MentallertUser> mentallertUsers = {};
   List<String> mentallertUserHandles = [];
-  Sentiment meanSentiment;
-  Sentiment modeSentiment;
+  Sentiment overallMeanSentiment;
+  Sentiment overallModeSentiment;
+  Sentiment finalSentiment = Sentiment.Neutral;
   BuildContext context;
 
   TextEditingController addUserController = TextEditingController();
@@ -22,10 +23,49 @@ class AppModel extends Model {
   AppModel(this.context) {
     addUserStreamController.add(AddingUserStates.Neutral);
   }
-  dismissCard(key){
-
+  dismissCard(key, handle) {
     mentallertUsers.remove(key);
+    mentallertUserHandles.remove(handle);
     notifyListeners();
+  }
+
+  setOverallSentiments() {
+    double sentimentSum  =0;
+    double sentimentMean = 0; 
+    Map<Sentiment, int> counts = {
+      Sentiment.Happy: 0,
+      Sentiment.Neutral: 0,
+      Sentiment.Sad: 0
+    };
+
+    mentallertUsers.forEach((key, value) {
+      sentimentSum += value.overallSentiment;
+
+      counts[value.sentiment]++;
+    });
+
+    sentimentMean = sentimentSum / (mentallertUsers.length);
+    overallMeanSentiment = (sentimentMean > 0.85)
+        ? Sentiment.Happy
+        : (sentimentMean < 0.2) ? Sentiment.Sad : Sentiment.Neutral;
+
+    overallModeSentiment =
+        (counts[Sentiment.Happy] >= counts[Sentiment.Neutral] &&
+                counts[Sentiment.Happy] >= counts[Sentiment.Sad])
+            ? Sentiment.Happy
+            : (counts[Sentiment.Neutral] >= counts[Sentiment.Happy] &&
+                    counts[Sentiment.Neutral] >= counts[Sentiment.Sad])
+                ? Sentiment.Neutral
+                : Sentiment.Sad;
+
+    print("sentiments " );
+
+    print(overallModeSentiment);
+    print(overallMeanSentiment);
+
+    finalSentiment = (overallMeanSentiment == Sentiment.Neutral) ? overallModeSentiment : overallMeanSentiment;
+
+  
   }
 
   searchUser(String handle) async {
@@ -53,12 +93,16 @@ class AppModel extends Model {
 
     addUserController.text = "";
 
+    addUserStreamController.add(AddingUserStates.Neutral);
+
+    if(mentallertUsers.length >=1)setOverallSentiments();
+
     notifyListeners();
   }
 
   userExists(String handle) async {
     return (json.decode((await http.get(
-                    'https://tweets-api.azurewebsites.net/user-exists?user=${handle}'))
+                    'https://mentalert.azurewebsites.net/user-exists?user=${handle}'))
                 .body))["exist"]
             .toString()
             .toLowerCase() ==
@@ -67,7 +111,7 @@ class AppModel extends Model {
 
   userDetails(String handle) async {
     return (json.decode((await http.get(
-            'https://tweets-api.azurewebsites.net/user-details?user=${handle}'))
+            'https://mentalert.azurewebsites.net/user-details?user=${handle}'))
         .body));
   }
 
@@ -106,14 +150,14 @@ class AppModel extends Model {
 
   Future<http.Response> getTweets(handle) {
     return http
-        .get('https://tweets-api.azurewebsites.net/get-tweets?user=${handle}');
+        .get('https://mentalert.azurewebsites.net/get-tweets?user=${handle}');
   }
   // bool
 }
 
-// https://tweets-api.azurewebsites.net/get-tweets?user=love_camelleg
-// https://tweets-api.azurewebsites.net/user-exists?user=love_camelleG
-// https://tweets-api.azurewebsites.net/user-details?user=James46407787
-// https://tweets-api.azurewebsites.net/tweets-after?user=James46407787&timestamp=0
+// https://mentalert.azurewebsites.net/get-tweets?user=love_camelleg
+// https://mentalert.azurewebsites.net/user-exists?user=love_camelleG
+// https://mentalert.azurewebsites.net/user-details?user=James46407787
+// https://mentalert.azurewebsites.net/tweets-after?user=James46407787&timestamp=0
 
 enum AddingUserStates { Neutral, LoadingSearch, LoadingCheck, Cross }
