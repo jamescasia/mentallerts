@@ -91,7 +91,10 @@ class _ExpandingCardState extends State<ExpandingCard> {
     var happy_sad_gradient = LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Colors.yellow, Colors.blue]);
+        colors: [
+          const Color(0xffFC2A2A),
+          const Color(0xff003AAE),
+        ]);
 
     var blue_black_gradient = LinearGradient(
         begin: Alignment.topCenter,
@@ -99,7 +102,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
         colors: [Colors.blueGrey, Colors.blueAccent]);
     return ScopedModelDescendant<AppModel>(builder: (context, child, appModel) {
       return Dismissible(
-        key: Key("haha"),
+        key:  Key(UniqueKey().toString()), 
         background: Container(
           color: Colors.red,
           child: Center(
@@ -239,10 +242,19 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                     children: <Widget>[
                                       InkWell(
                                         onTap: () {
-                                          setState(() {
-                                            this.sentimentInfoBalloonShown =
-                                                true;
-                                          });
+                                          // setState(() {
+                                          //   this.sentimentInfoBalloonShown =
+                                          //       true;
+                                          // });
+
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: true,
+                                            // child: SentimentStateInfo(),
+                                            builder: (context) {
+                                              return SentimentStateInfo();
+                                            },
+                                          );
                                         },
                                         splashColor: Colors.blue,
                                         highlightColor: Colors.green,
@@ -280,8 +292,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                             InkWell(
                                               splashColor: Colors.red,
                                               highlightColor: Colors.green,
-                                              onTap: () { 
-                                              },
+                                              onTap: () {},
                                               child: Row(
                                                 children: <Widget>[
                                                   Text(

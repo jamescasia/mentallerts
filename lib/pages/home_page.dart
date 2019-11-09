@@ -13,6 +13,7 @@ import 'dart:math';
 import 'package:mentallerts/helpers/mentallert_icons.dart';
 import 'package:flutter/services.dart';
 import 'package:mentallerts/widgets/reactive_button.dart';
+import 'package:mentallerts/widgets/gradient_icon.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mentallerts/models/Sentiment.dart';
@@ -43,6 +44,19 @@ class _HomePageState extends State<HomePage> {
       colors: [
         Colors.greenAccent.shade400,
         Colors.greenAccent.shade400,
+      ]);
+
+  var happy_neutral_sad_gradient = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        const Color(0xff003AAE),
+        const Color(0xffBC0064),
+        Colors.tealAccent.shade400,
+        Colors.teal,
+        Colors.tealAccent.shade400,
+        const Color(0xffD7DF16),
+        const Color(0xffFC2A2A)
       ]);
 
   var neutral_gradient = LinearGradient(
@@ -499,6 +513,141 @@ class LoadingCheckWidget extends StatelessWidget {
                   ))
             ],
           )),
+    );
+  }
+}
+
+class SentimentStateInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var red_yellow_gradient = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [const Color(0xffFC2A2A), const Color(0xffD7DF16)]);
+
+    var blue_red_gradient = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [const Color(0xff003AAE), const Color(0xffBC0064)]);
+
+    var green_green_gradient = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Colors.greenAccent.shade400,
+          Colors.greenAccent.shade400,
+        ]);
+
+    var happy_neutral_sad_gradient = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          const Color(0xff003AAE),
+          const Color(0xffBC0064),
+          Colors.tealAccent.shade400,
+          Colors.teal,
+          Colors.tealAccent.shade400,
+          const Color(0xffD7DF16),
+          const Color(0xffFC2A2A)
+        ]);
+
+    var neutral_gradient = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Colors.teal,
+          Colors.tealAccent.shade400,
+        ]);
+    return AlertDialog(
+      content: Container(
+        decoration: BoxDecoration(
+            // borderRadius: BorderRadius.all(Radius.circular(30))
+            ),
+        height: 120,
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    GradientIcon(
+                      icon: MentallertIcons.asset_1,
+                      gradient: blue_red_gradient,
+                      size: 50,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "SAD",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w700,
+                          color: blue_red_gradient.colors[0]),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    GradientIcon(
+                      icon: MentallertIcons.asset_3,
+                      gradient: neutral_gradient,
+                      size: 50,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "NEUTRAL",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w700,
+                          color: neutral_gradient.colors[0]),
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    GradientIcon(
+                      icon: MentallertIcons.asset_3,
+                      gradient: red_yellow_gradient,
+                      size: 50,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "HAPPY",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: "Montserrat",
+                          fontWeight: FontWeight.w700,
+                          color: red_yellow_gradient.colors[0]),
+                    )
+                  ],
+                )
+              ],
+            ),
+            Container(
+              width: 9999,
+              height: 20,
+              decoration: BoxDecoration(
+                gradient: happy_neutral_sad_gradient,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
