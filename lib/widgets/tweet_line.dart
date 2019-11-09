@@ -9,7 +9,7 @@ class TweetLine extends StatelessWidget {
   final MentallertTweet tweet;
 
   TweetLine(this.tweet);
-    var green_green_gradient = LinearGradient(
+  var green_green_gradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
@@ -21,6 +21,14 @@ class TweetLine extends StatelessWidget {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [const Color(0xffFC2A2A), const Color(0xffD7DF16)]);
+
+  var neutral_gradient = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Colors.teal,
+        Colors.tealAccent.shade400,
+      ]);
 
   var blue_red_gradient = LinearGradient(
       begin: Alignment.topCenter,
@@ -63,7 +71,7 @@ class TweetLine extends StatelessWidget {
                     ? GradientIcon(
                         icon: MentallertIcons.asset_3,
                         size: 25,
-                        gradient: green_green_gradient,
+                        gradient: neutral_gradient,
                       )
                     : GradientIcon(
                         icon: MentallertIcons.asset_2,

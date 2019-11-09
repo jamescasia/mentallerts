@@ -80,6 +80,14 @@ class _ExpandingCardState extends State<ExpandingCard> {
         end: Alignment.bottomCenter,
         colors: [const Color(0xff003AAE), const Color(0xffBC0064)]);
 
+    var neutral_gradient = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Colors.teal,
+          Colors.tealAccent.shade400,
+        ]);
+
     var happy_sad_gradient = LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
@@ -257,7 +265,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                                             .asset_3,
                                                         size: 41,
                                                         gradient:
-                                                            green_green_gradient,
+                                                            neutral_gradient,
                                                       )
                                                     : GradientIcon(
                                                         icon: MentallertIcons
@@ -272,8 +280,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
                                             InkWell(
                                               splashColor: Colors.red,
                                               highlightColor: Colors.green,
-                                              onTap: () {
-                                                print("Yawa");
+                                              onTap: () { 
                                               },
                                               child: Row(
                                                 children: <Widget>[
@@ -339,7 +346,7 @@ class _ExpandingCardState extends State<ExpandingCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Sentiment",
+                            "Last Tweets",
                             style: TextStyle(
                                 color: Colors.grey.shade900,
                                 fontSize: 16,

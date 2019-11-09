@@ -64,7 +64,7 @@ class AppModel extends Model {
     print(overallMeanSentiment);
 
     finalSentiment = (overallMeanSentiment == Sentiment.Neutral) ? overallModeSentiment : overallMeanSentiment;
-
+    finalSentiment = overallMeanSentiment;
   
   }
 
